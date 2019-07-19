@@ -18,7 +18,7 @@ export function csStoreUpdate(snapshot: ContentStoreSnapshot) {
 export function puStoreUpdate(snapshot: PopupStoreSnapshot) {
   return {
     snapshot,
-    type: MessageType.PU_STORE_UPDAATE as MessageType.PU_STORE_UPDAATE,
+    type: MessageType.PU_STORE_UPDATE as MessageType.PU_STORE_UPDATE,
   }
 }
 
