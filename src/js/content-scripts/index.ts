@@ -1,11 +1,11 @@
 import 'chrome-extension-async'
 import { applySnapshot, onSnapshot } from 'mobx-state-tree'
 import { contentModel } from '../models/content-model';
-import '../shared/logger'
-import logger from '../shared/logger';
-import { getBgStore } from '../shared/message-creators';
-import { MessageType } from '../shared/message-types';
-import { BackgroundStoreSnapshot, Messages } from '../types/types';
+import '../shared/lib/logger'
+import logger from '../shared/lib/logger';
+import { getBgStore } from '../shared/messages/message-creators';
+import { MessageType } from '../shared/messages/message-types';
+import { BackgroundStoreSnapshot, Messages } from '../types';
 
 // Create the store
 const contentStore = contentModel.create({

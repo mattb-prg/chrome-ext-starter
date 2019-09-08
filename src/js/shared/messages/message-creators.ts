@@ -1,4 +1,4 @@
-import { BackgroundStoreSnapshot, ContentStoreSnapshot, PopupStoreSnapshot } from "../types/types";
+import { BackgroundStoreSnapshot, ContentStoreSnapshot, PopupStoreSnapshot } from "../../types";
 import { MessageType } from "./message-types";
 
 export function bgStoreUpdate(snapshot: BackgroundStoreSnapshot) {

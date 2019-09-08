@@ -3,9 +3,9 @@ const webpack = require("webpack");
 
 module.exports = {
     entry: {
-        background: "./src/js/background/background.ts",
-        content: "./src/js/content-scripts/content.ts",
-        popup: "./src/js/popup/popup.ts"
+        background: "./src/js/background/index.ts",
+        content: "./src/js/content-scripts/index.ts",
+        popup: "./src/js/popup/index.ts"
     },
     output: {
         filename: "[name].js",
