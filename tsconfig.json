@@ -8,6 +8,7 @@
         "sourceMap": true,
         "jsx": "react",
         "emitBOM": true,
-        "charset": "utf8"
+        "charset": "utf8",
+        "esModuleInterop": true,
     }
 }

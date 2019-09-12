@@ -1,28 +1,33 @@
-import 'chrome-extension-async'
-import { applySnapshot, onSnapshot } from 'mobx-state-tree'
-import { contentModel } from '../models/content-model';
-import '../shared/lib/logger'
-import logger from '../shared/lib/logger';
-import { getBgStore } from '../shared/messages/message-creators';
-import { MessageType } from '../shared/messages/message-types';
+import 'chrome-extension-async';
+import { applySnapshot } from 'mobx-state-tree';
+import { backgroundModel } from '../models/background';
+import { contentModel } from '../models/content';
+import '../shared/lib/logger';
+import { getBgStore } from '../shared/messages/creators';
+import { MessageType } from '../shared/messages/types';
 import { BackgroundStoreSnapshot, Messages } from '../types';
 
-// Create the store
-const contentStore = contentModel.create({
-  background: {},
-})
+// Make sure to import chrome-extension-async to asyncify chrome API
+async function main() {
+  // Create the stores
+  const snapshot: BackgroundStoreSnapshot = await chrome.runtime.sendMessage(getBgStore())
+  const backgroundStore = backgroundModel.create(snapshot)
+  const contentStore = contentModel.create()
 
-// make sure to import chrome-extension-async to asyncify chrome API
-// Get the current background page store
-chrome.runtime.sendMessage(getBgStore()).then((snapshot: BackgroundStoreSnapshot) => {
-  applySnapshot(contentStore.background, snapshot)
-})
+  // Any changes made here to the background store can be sent back to
+  // the background page if needed. This code can also be used in the popup
+  //
+  // onSnapshot(backgroundStore, async (snapshot) => {
+  //   await chrome.runtime.sendMessage(bgStoreUpdate(snapshot))
+  // })
 
-// Listen for messages
-chrome.runtime.onMessage.addListener((message: Messages, sender, sendResponse) => {
-  // apply any updates from the background store
-  if (message.type === MessageType.BG_STORE_UPDATE) {
-    applySnapshot(contentStore.background, message.snapshot)
-  }
-  return true
-})
+  // Listen for messages
+  chrome.runtime.onMessage.addListener((message: Messages, sender, sendResponse) => {
+    // apply any updates from the background store
+    if (message.type === MessageType.BG_STORE_UPDATE) {
+      applySnapshot(backgroundStore, message.snapshot)
+    }
+    return true
+  })
+}
+main()
