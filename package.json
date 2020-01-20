@@ -17,6 +17,7 @@
     "@types/react-dom": "^16.9.0",
     "@types/styled-components": "git+https://github.com/mattb-prg/types-styled-components-web.git",
     "awesome-typescript-loader": "^5.2.1",
+    "chrome-ext-mst-sync": "0.0.14",
     "chrome-extension-async": "^3.3.2",
     "copy-webpack-plugin": "^5.0.3",
     "jest": "^24.9.0",
@@ -29,7 +30,7 @@
     "source-map-loader": "^0.2.4",
     "styled-components": "^4.3.2",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.5.3",
+    "typescript": "^3.7.5",
     "webpack": "^4.35.3",
     "webpack-cli": "^3.3.6",
     "webpack-merge": "^4.2.1"

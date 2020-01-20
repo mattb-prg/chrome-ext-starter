@@ -1,23 +1,26 @@
-import { applySnapshot } from "mobx-state-tree"
+import { createStoreSync, getStore } from "chrome-ext-mst-sync"
 import { createElement } from "react"
 import { render } from "react-dom"
-import { backgroundModel } from "../models/background"
+import { backgroundModel, id } from "../models/background"
 import { popupModel } from "../models/popup"
-import { getBgStore } from "../shared/messages/creators"
 import { MessageType } from "../shared/messages/types"
 import { Messages } from "../types"
 import App from "./components/app"
 
 async function main() {
-    const snapshot = await chrome.runtime.sendMessage(getBgStore())
-    const backgroundStore = backgroundModel.create(snapshot)
+    const snap = await getStore(id)
+    const backgroundStore = backgroundModel.create(snap)
     const popupStore = popupModel.create({
         test: 'foo',
     })
+    const sync = createStoreSync(id, backgroundStore, {
+        truthStore: false,
+    })
+    sync.start()
 
     chrome.runtime.onMessage.addListener((message: Messages, sender, sendResponse) => {
-        if (message.type === MessageType.BG_STORE_UPDATE) {
-            applySnapshot(backgroundStore, message.snapshot)
+        if (message.type === MessageType.EXAMPLE_TWO) {
+            sendResponse(message.bar)
         }
     })
 

@@ -2,7 +2,7 @@ import { SnapshotIn } from "mobx-state-tree";
 import { backgroundModel } from "../models/background";
 import { contentModel } from "../models/content";
 import { popupModel } from "../models/popup";
-import * as messageActions from '../shared/messages/creators'
+import * as messageActions from '../shared/messages/actions'
 
 // Models
 export type BackgroundStoreSnapshot = SnapshotIn<typeof backgroundModel>

@@ -1,17 +1,17 @@
+import { getStore } from 'chrome-ext-mst-sync';
 import 'chrome-extension-async';
 import { applySnapshot } from 'mobx-state-tree';
-import { backgroundModel } from '../models/background';
+import { backgroundModel, id } from '../models/background';
 import { contentModel } from '../models/content';
 import '../shared/lib/logger';
-import { getBgStore } from '../shared/messages/creators';
 import { MessageType } from '../shared/messages/types';
-import { BackgroundStoreSnapshot, Messages } from '../types';
+import { Messages } from '../types';
 
 // Make sure to import chrome-extension-async to asyncify chrome API
 async function main() {
   // Create the stores
-  const snapshot: BackgroundStoreSnapshot = await chrome.runtime.sendMessage(getBgStore())
-  const backgroundStore = backgroundModel.create(snapshot)
+  const snap = await getStore(id)
+  const backgroundStore = backgroundModel.create(snap)
   const contentStore = contentModel.create()
 
   // Any changes made here to the background store can be sent back to
@@ -24,8 +24,8 @@ async function main() {
   // Listen for messages
   chrome.runtime.onMessage.addListener((message: Messages, sender, sendResponse) => {
     // apply any updates from the background store
-    if (message.type === MessageType.BG_STORE_UPDATE) {
-      applySnapshot(backgroundStore, message.snapshot)
+    if (message.type === MessageType.EXAMPLE) {
+      applySnapshot(backgroundStore, message.foo)
     }
     return true
   })
