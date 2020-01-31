@@ -3,7 +3,6 @@ import { createElement } from "react"
 import { render } from "react-dom"
 import { backgroundModel, id } from "../models/background"
 import { popupModel } from "../models/popup"
-import { MessageType } from "../shared/messages/types"
 import { Messages } from "../types"
 import App from "./components/app"
 
@@ -19,7 +18,7 @@ async function main() {
     sync.start()
 
     chrome.runtime.onMessage.addListener((message: Messages, sender, sendResponse) => {
-        if (message.type === MessageType.EXAMPLE_TWO) {
+        if (message.type === 'EXAMPLE_TWO') {
             sendResponse(message.bar)
         }
     })

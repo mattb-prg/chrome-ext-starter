@@ -1,16 +1,15 @@
 import { BackgroundStoreSnapshot, ContentStoreSnapshot, PopupStoreSnapshot } from "../../types";
-import { MessageType } from "./types";
 
 export function example(foo: number) {
   return {
     foo,
-    type: MessageType.EXAMPLE,
+    type: 'EXAMPLE' as const,
   }
 }
 
 export function exampleTwo(bar: number) {
   return {
     bar,
-    type: MessageType.EXAMPLE_TWO,
+    type: 'EXAMPLE_TWO' as const,
   }
 }

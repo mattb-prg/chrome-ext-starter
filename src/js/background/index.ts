@@ -2,7 +2,6 @@ import { createStoreSync } from 'chrome-ext-mst-sync';
 import 'chrome-extension-async';
 import { backgroundModel, id } from "../models/background";
 import '../shared/lib/logger';
-import { MessageType } from '../shared/messages/types';
 import { Messages } from '../types';
 
 async function main() {
@@ -18,7 +17,7 @@ async function main() {
 
   // Listen for messages
   chrome.runtime.onMessage.addListener((message: Messages, sender, sendResponse) => {
-    if (message.type === MessageType.EXAMPLE) {
+    if (message.type === 'EXAMPLE') {
       sendResponse(message.foo)
     }
   })
