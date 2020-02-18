@@ -1,10 +1,10 @@
 import { getStore } from 'chrome-ext-mst-sync';
 import 'chrome-extension-async';
 import { applySnapshot } from 'mobx-state-tree';
-import { backgroundModel, id } from '../models/background';
-import { contentModel } from '../models/content';
-import '../shared/lib/logger';
-import { Messages } from '../types';
+import { backgroundModel, id } from '../../models/background';
+import { contentModel } from '../../models/content';
+import '../../shared/lib/logger';
+import { Messages } from '../../types';
 
 // Make sure to import chrome-extension-async to asyncify chrome API
 async function main() {

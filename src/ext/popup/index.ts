@@ -1,10 +1,10 @@
 import { createStoreSync, getStore } from "chrome-ext-mst-sync"
 import { createElement } from "react"
 import { render } from "react-dom"
-import { backgroundModel, id } from "../models/background"
-import { popupModel } from "../models/popup"
-import { Messages } from "../types"
-import App from "./components/app"
+import { backgroundModel, id } from "../../models/background"
+import { popupModel } from "../../models/popup"
+import { Messages } from "../../types"
+import App from "../../apps/popup/app"
 
 async function main() {
     const snap = await getStore(id)

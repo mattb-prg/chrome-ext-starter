@@ -1,8 +1,8 @@
 import { createStoreSync } from 'chrome-ext-mst-sync';
 import 'chrome-extension-async';
-import { backgroundModel, id } from "../models/background";
-import '../shared/lib/logger';
-import { Messages } from '../types';
+import { backgroundModel, id } from "../../models/background";
+import '../../shared/lib/logger';
+import { Messages } from '../../types';
 
 async function main() {
   // Create the store
