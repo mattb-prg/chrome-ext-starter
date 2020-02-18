@@ -29,9 +29,8 @@ module.exports = {
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
           }),
         new CopyWebpackPlugin([
-            { from: 'src/html', to: '../html' },
-            { from: 'src/css', to: '../css' },
-            { from: 'src/manifest.json', to: '../' },
+            { from: 'src/ext/html', to: '../html' },
+            { from: 'src/ext/css', to: '../css' },
         ])
     ]
 };

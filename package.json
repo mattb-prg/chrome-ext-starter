@@ -1,11 +1,11 @@
 {
   "name": "starter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=development webpack --config webpack.dev.config.js --watch",
-    "build": "NODE_ENV=production webpack --config webpack.prod.config.js",
+    "build": "node ./scripts/pre-build.js && NODE_ENV=production webpack --config webpack.prod.config.js && node ./scripts/post-build.js",
     "test": "ts-jest"
   },
   "author": "",
@@ -20,8 +20,10 @@
     "chrome-ext-mst-sync": "0.0.14",
     "chrome-extension-async": "^3.3.2",
     "copy-webpack-plugin": "^5.0.3",
+    "fs-extra": "^8.1.0",
     "jest": "^24.9.0",
     "js-logger": "^1.6.0",
+    "merge-jsons-webpack-plugin": "^1.0.20",
     "mobx": "^5.11.0",
     "mobx-react": "^6.1.3",
     "mobx-state-tree": "^3.14.0",
@@ -33,6 +35,7 @@
     "typescript": "^3.7.5",
     "webpack": "^4.35.3",
     "webpack-cli": "^3.3.6",
-    "webpack-merge": "^4.2.1"
+    "webpack-merge": "^4.2.1",
+    "zip-a-folder": "0.0.12"
   }
 }
