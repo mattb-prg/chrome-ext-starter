@@ -1,10 +1,11 @@
 import { createStoreSync, getStore } from "chrome-ext-mst-sync"
 import { createElement } from "react"
 import { render } from "react-dom"
+import App from "../../apps/popup/app"
 import { backgroundModel, id } from "../../models/background"
 import { popupModel } from "../../models/popup"
-import { Messages } from "../../types"
-import App from "../../apps/popup/app"
+import Message from "../../shared/messages/types"
+import { MessageActions } from "../../types"
 
 async function main() {
     const snap = await getStore(id)
@@ -17,8 +18,8 @@ async function main() {
     })
     sync.start()
 
-    chrome.runtime.onMessage.addListener((message: Messages, sender, sendResponse) => {
-        if (message.type === 'EXAMPLE_TWO') {
+    chrome.runtime.onMessage.addListener((message: MessageActions, sender, sendResponse) => {
+        if (message.type === Message.EXAMPLE_2) {
             sendResponse(message.bar)
         }
     })

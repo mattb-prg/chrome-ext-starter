@@ -10,4 +10,4 @@ export type ContentStoreSnapshot = SnapshotIn<typeof contentModel>
 export type PopupStoreSnapshot = SnapshotIn<typeof popupModel>
 
 // Messages
-export type Messages = ReturnType<typeof messageActions[keyof typeof messageActions]>
+export type MessageActions = ReturnType<typeof messageActions[keyof typeof messageActions]>

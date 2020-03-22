@@ -4,7 +4,8 @@ import { applySnapshot } from 'mobx-state-tree';
 import { backgroundModel, id } from '../../models/background';
 import { contentModel } from '../../models/content';
 import '../../shared/lib/logger';
-import { Messages } from '../../types';
+import { MessageActions } from '../../types';
+import Message from '../../shared/messages/types';
 
 // Make sure to import chrome-extension-async to asyncify chrome API
 async function main() {
@@ -21,9 +22,9 @@ async function main() {
   // })
 
   // Listen for messages
-  chrome.runtime.onMessage.addListener((message: Messages, sender, sendResponse) => {
+  chrome.runtime.onMessage.addListener((message: MessageActions, sender, sendResponse) => {
     // apply any updates from the background store
-    if (message.type === 'EXAMPLE') {
+    if (message.type === Message.EXAMPLE) {
       applySnapshot(backgroundStore, message.foo)
     }
     return true
