@@ -6,6 +6,11 @@ import { backgroundModel } from '../../models/background';
 import { popupModel } from '../../models/popup';
 import { AsyncStoreFns } from 'chrome-ext-mst-sync';
 import { BackgroundStoreInstance, PopupStoreInstance } from '../../types';
+import style from './App.module.scss';
+import classnames from 'classnames';
+import logger from '../../shared/lib/logger';
+
+logger.debug(style)
 
 interface IProps {
     stores: {
@@ -20,16 +25,12 @@ const Context = createContext<IProps>(null as any)
 const App = observer((props: IProps) => {
     return (
         <Context.Provider value={{ ...props }}>
-            <StyledComponent />
+            <Main />
         </Context.Provider>
     )
 })
 
-interface IStyledProps {
-    className?: string
-}
-
-const StyledComponent = styled(observer((props: IStyledProps) => {
+const Main = observer(() => {
     const { popup, bgActions, background } = useContext(Context).stores;
 
     const onSignInOut = async () => {
@@ -44,11 +45,9 @@ const StyledComponent = styled(observer((props: IStyledProps) => {
         <div>
             <div>{background.loggedIn ? 'Signed in' : 'Signed out'}</div>
             <div><button onClick={onSignInOut}>{background.loggedIn ? 'Sign out' : 'Sign in'}</button></div>
-            <div className={props.className}>{popup.test}</div>
+            <div className={classnames(style.redFont)}>{popup.test}</div>
             <button onClick={popup.changeTest}>Change test prop</button>
         </div>
     )
-}))`
-    color: red;
-`
+})
 export default App

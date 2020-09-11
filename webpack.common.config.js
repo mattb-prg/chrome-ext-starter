@@ -21,13 +21,27 @@ module.exports = {
         rules: [
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
             { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+            {
+                test: /module\.scss$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                            modules: true
+                        }
+                    },
+                    'sass-loader'
+                ]
+            },
         ]
     },
 
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-          }),
+        }),
         new CopyWebpackPlugin([
             { from: 'src/ext/html', to: '../html' },
             { from: 'src/ext/css', to: '../css' },
