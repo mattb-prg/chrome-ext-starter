@@ -1,11 +1,15 @@
-import { types } from "mobx-state-tree";
+import { SnapshotIn, types } from "mobx-state-tree";
 
 export const popupModel = types.model({
-    test: types.string,
+    clickCounter: types.number,
 }).actions((self) => {
     return {
-        changeTest() {
-            self.test = 'something else'
-        },
+        incrCounter() {
+            self.clickCounter += 1
+        }
     }
 })
+
+export const popupModelDefault: SnapshotIn<typeof popupModel> = {
+    clickCounter: 0
+}

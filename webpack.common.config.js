@@ -4,12 +4,12 @@ const webpack = require("webpack");
 module.exports = {
     entry: {
         background: "./src/ext/background/index.ts",
-        content: "./src/ext/content-scripts/index.ts",
-        popup: "./src/ext/popup/index.ts"
+        'js/content': "./src/ext/content-scripts/index.ts",
+        'js/popup': "./src/ext/popup/index.ts"
     },
     output: {
         filename: "[name].js",
-        path: __dirname + "/dist/js"
+        path: __dirname + "/dist/"
     },
 
     resolve: {
@@ -43,8 +43,8 @@ module.exports = {
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
         }),
         new CopyWebpackPlugin([
-            { from: 'src/ext/html', to: '../html' },
-            { from: 'src/ext/css', to: '../css' },
+            { from: 'src/ext/html', to: 'html' },
+            { from: 'src/ext/css', to: 'css' },
         ])
     ]
 };

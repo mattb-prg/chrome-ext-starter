@@ -1,53 +1,60 @@
+import classnames from 'classnames';
 import { observer } from 'mobx-react';
 import { Instance } from 'mobx-state-tree';
-import React, { createContext, useContext } from 'react';
-import styled from 'styled-components';
-import { backgroundModel } from '../../models/background';
-import { popupModel } from '../../models/popup';
-import { AsyncStoreFns } from 'chrome-ext-mst-sync';
-import { BackgroundStoreInstance, PopupStoreInstance } from '../../types';
+import React, { createContext, FC, useContext } from 'react';
+import { popupModel, popupModelDefault } from '../../models/popup';
+import { sharedModel, sharedModelDefault } from '../../models/shared';
+import logger from '../../shared/logger';
 import style from './App.module.scss';
-import classnames from 'classnames';
-import logger from '../../shared/lib/logger';
 
 logger.debug(style)
 
 interface IProps {
-    stores: {
-        background: BackgroundStoreInstance
-        popup: PopupStoreInstance
-        bgActions: AsyncStoreFns<BackgroundStoreInstance>
-    }
+    sharedStore: Instance<typeof sharedModel>
+    popupStore: Instance<typeof popupModel>
 }
 
-const Context = createContext<IProps>(null as any)
+const PopupStoreContext = createContext({
+    popupStore: popupModel.create(popupModelDefault),
+    sharedStore: sharedModel.create(sharedModelDefault)
+})
 
-const App = observer((props: IProps) => {
+export const App = observer((props: IProps) => {
     return (
-        <Context.Provider value={{ ...props }}>
-            <Main />
-        </Context.Provider>
+        <PopupStoreContext.Provider value={{ ...props }}>
+            <MainCont />
+        </PopupStoreContext.Provider>
     )
 })
 
-const Main = observer(() => {
-    const { popup, bgActions, background } = useContext(Context).stores;
+const MainCont = observer(() => {
+    const { popupStore, sharedStore } = useContext(PopupStoreContext);
 
-    const onSignInOut = async () => {
-        if (background.loggedIn) {
-            await bgActions.signOut()
-        } else {
-            await bgActions.signIn()
-        }
-    }
+    return <Main
+        bgColor={sharedStore.bgColor}
+        clickCount={popupStore.clickCounter}
+        installDate={sharedStore.installDate}
+        onIncrClickCounter={popupStore.incrCounter}
+        onChangeBgColor={sharedStore.toggleBgColor}
+    />
+})
 
+interface IMainProps {
+    bgColor: string
+    clickCount: number
+    installDate: Date
+    onChangeBgColor(): void
+    onIncrClickCounter(): void
+}
+
+const Main = observer<FC<IMainProps>>((props) => {
     return (
         <div>
-            <div>{background.loggedIn ? 'Signed in' : 'Signed out'}</div>
-            <div><button onClick={onSignInOut}>{background.loggedIn ? 'Sign out' : 'Sign in'}</button></div>
-            <div className={classnames(style.redFont)}>{popup.test}</div>
-            <button onClick={popup.changeTest}>Change test prop</button>
+            <div style={{ marginTop: 10 }}>Install time: {props.installDate.toTimeString()}</div>
+            <div>Toggle BG Color</div>
+            <button onClick={props.onChangeBgColor}>toggle</button>
+            <div>Click counter: {props.clickCount}</div>
+            <button onClick={props.onIncrClickCounter}>increment</button>
         </div>
     )
 })
-export default App

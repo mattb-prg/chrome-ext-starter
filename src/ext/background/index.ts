@@ -1,24 +1,14 @@
-import { asyncifyAll } from 'chrome-ext-async';
-import { createStoreSync } from 'chrome-ext-mst-sync';
-import { backgroundModel, id } from "../../models/background";
-import '../../shared/lib/logger';
+import { sharedModel, sharedModelDefault } from '../../models/shared';
+import '../../shared/logger';
 import Message from '../../shared/messages/types';
+import { createStoreFromStorage, saveStoreSnapshots } from '../../shared/utils';
 import { MessageActions } from '../../types';
-
-const ac = asyncifyAll()
+import { storageKeys } from '../config';
 
 async function main() {
-  // Create the store
-  const backgroundStore = backgroundModel.create({
-    loggedIn: false,
-  })
-  const sync = createStoreSync(id, backgroundStore, {
-    truthStore: true,
-    getTabs: (cb) => {
-      chrome.tabs.query({}, cb)
-    }
-  })
-  sync.start()
+  const sharedStore = await createStoreFromStorage(sharedModel, sharedModelDefault, storageKeys.shared)
+
+  saveStoreSnapshots(sharedStore, storageKeys.shared)
 
   // Listen for messages
   chrome.runtime.onMessage.addListener((message: MessageActions, sender, sendResponse) => {
@@ -27,5 +17,9 @@ async function main() {
     }
   })
 
+  chrome.runtime.onInstalled.addListener(async () => {
+    sharedStore.setInstallDate(new Date)
+  })
 }
+
 main()

@@ -1,4 +1,3 @@
-import { BackgroundStoreSnapshot, ContentStoreSnapshot, PopupStoreSnapshot } from "../../types";
 import Message from './types';
 
 export function example(foo: number) {

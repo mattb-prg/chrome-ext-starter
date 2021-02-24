@@ -1,39 +1,22 @@
-import { asyncifyAll } from 'chrome-ext-async'
-import { createStoreSync, getStore } from "chrome-ext-mst-sync"
+import { autorun } from "mobx"
 import { createElement } from "react"
 import { render } from "react-dom"
-import App from "../../apps/popup/App"
-import { backgroundModel, id } from "../../models/background"
-import { popupModel } from "../../models/popup"
-import Message from "../../shared/messages/types"
-import { MessageActions } from "../../types"
-
-const ac = asyncifyAll()
+import { App } from "../../apps/popup/App"
+import { popupModel, popupModelDefault } from "../../models/popup"
+import { sharedModel, sharedModelDefault } from "../../models/shared"
+import { applySnapshotOnStorageChange, createStoreFromStorage, saveStoreSnapshots } from "../../shared/utils"
+import { storageKeys } from "../config"
 
 async function main() {
-    const snap = await getStore(id)
-    const backgroundStore = backgroundModel.create(snap)
-    const popupStore = popupModel.create({
-        test: 'foo',
-    })
-    const sync = createStoreSync(id, backgroundStore, {
-        truthStore: false,
-    })
-    const bgActions = sync.createActions()
-    sync.start()
+    const sharedStore = await createStoreFromStorage(sharedModel, sharedModelDefault, storageKeys.shared)
+    const popupStore = popupModel.create(popupModelDefault)
+    render(createElement(App, { popupStore, sharedStore }), document.getElementById('app-root'))
 
-    chrome.runtime.onMessage.addListener((message: MessageActions, sender, sendResponse) => {
-        if (message.type === Message.EXAMPLE_2) {
-            sendResponse(message.bar)
-        }
+    autorun(() => {
+        document.body.style.backgroundColor = sharedStore.bgColor
     })
 
-    render(createElement(App, {
-        stores: {
-            background: backgroundStore,
-            bgActions,
-            popup: popupStore,
-        },
-    }), document.getElementById('app-root'))
+    chrome.storage.onChanged.addListener(applySnapshotOnStorageChange(sharedStore, storageKeys.shared))
+    saveStoreSnapshots(sharedStore, storageKeys.shared)
 }
 main()

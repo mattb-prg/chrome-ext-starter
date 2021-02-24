@@ -12,7 +12,7 @@ module.exports = merge(common, {
                 "./src/ext/manifest.prod.json",
             ],
             "output": {
-                "fileName": "../manifest.json"
+                "fileName": "manifest.json"
             }
         })
     ]
