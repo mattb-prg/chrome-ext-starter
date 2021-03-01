@@ -52,6 +52,10 @@ export function createChromeEventObservable<T extends (...args: any[]) => any, E
             }
         }) as unknown as T
         messageEvent.addListener(listener)
+
+        return () => {
+            messageEvent.removeListener(listener)
+        }
     })
 }
 
