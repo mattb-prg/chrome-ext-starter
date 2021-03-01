@@ -10,6 +10,6 @@ export function example(foo: number) {
 export function exampleTwo(bar: number) {
   return {
     bar,
-    type: Message.EXAMPLE_2 as const,
+    type: Message.EXAMPLE_TWO as const,
   }
 }

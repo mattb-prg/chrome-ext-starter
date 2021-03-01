@@ -1,6 +1,6 @@
 enum Message {
     EXAMPLE,
-    EXAMPLE_2,
+    EXAMPLE_TWO,
 }
 
 export default Message

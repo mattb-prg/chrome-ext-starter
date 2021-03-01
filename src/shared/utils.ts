@@ -1,6 +1,10 @@
 import { asyncifyAll } from "chrome-ext-async";
 import { applySnapshot, IAnyModelType, Instance, onSnapshot } from "mobx-state-tree";
 import R from 'ramda';
+import * as Rx from 'rxjs';
+import { OnMessageCB } from "../types";
+import Message from "./messages/types";
+import { filter } from 'rxjs/operators';
 
 const ac = asyncifyAll()
 
@@ -34,5 +38,25 @@ export const applySnapshotOnStorageChange = (store: Instance<IAnyModelType>, sto
                 applySnapshot(store, snapshot)
             }
         }
+    )
+}
+
+export function createChromeEventObservable<T extends (...args: any[]) => any, E extends chrome.events.Event<T>>(messageEvent: E) {
+    return new Rx.Observable<Parameters<Parameters<E['addListener']>[0]>>((subscriber) => {
+        const listener = ((...args: any) => {
+            if (chrome.runtime.lastError) {
+                subscriber.error(chrome.runtime.lastError)
+            } else {
+                subscriber.next(args)
+                return true
+            }
+        }) as unknown as T
+        messageEvent.addListener(listener)
+    })
+}
+
+export function filterMessage<M extends Message>(obs: Rx.Observable<any>, message: M) {
+    return obs.pipe<OnMessageCB<M>>(
+        filter(([m]) => m.type === message)
     )
 }

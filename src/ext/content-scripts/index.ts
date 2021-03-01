@@ -9,12 +9,14 @@ import { autorun } from 'mobx';
 import { applySnapshotOnStorageChange, createStoreFromStorage } from '../../shared/utils';
 import R from 'ramda';
 import { sharedModel, sharedModelDefault } from '../../models/shared';
-import { example } from '../../shared/messages/actions';
+import { example, exampleTwo } from '../../shared/messages/actions';
+import logger from '../../shared/logger';
 
 const ac = asyncifyAll()
 
 async function main() {
-  chrome.runtime.sendMessage(example(1))
+  logger.debug(await ac.runtime.sendMessage(example(1)))
+  logger.debug(await ac.runtime.sendMessage(exampleTwo(1)))
   const sharedStore = await createStoreFromStorage(sharedModel, sharedModelDefault, storageKeys.shared)
   const contentStore = contentModel.create(contentModelDeault)
 
