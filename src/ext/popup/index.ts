@@ -1,11 +1,13 @@
 import { autorun } from "mobx"
 import { createElement } from "react"
 import { render } from "react-dom"
-import { App } from "../../apps/popup/App"
+import { App } from "./components/App"
 import { popupModel, popupModelDefault } from "../../models/popup"
 import { sharedModel, sharedModelDefault } from "../../models/shared"
 import { applySnapshotOnStorageChange, createStoreFromStorage, saveStoreSnapshots } from "../../shared/utils"
 import { storageKeys } from "../config"
+
+import './style.css'
 
 async function main() {
     const sharedStore = await createStoreFromStorage(sharedModel, sharedModelDefault, storageKeys.shared)

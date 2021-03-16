@@ -1,13 +1,8 @@
-import classnames from 'classnames';
 import { observer } from 'mobx-react';
 import { Instance } from 'mobx-state-tree';
 import React, { createContext, FC, useContext } from 'react';
-import { popupModel, popupModelDefault } from '../../models/popup';
-import { sharedModel, sharedModelDefault } from '../../models/shared';
-import logger from '../../shared/logger';
-import style from './App.module.scss';
-
-logger.debug(style)
+import { popupModel, popupModelDefault } from '../../../models/popup';
+import { sharedModel, sharedModelDefault } from '../../../models/shared';
 
 interface IProps {
     sharedStore: Instance<typeof sharedModel>
@@ -47,14 +42,20 @@ interface IMainProps {
     onIncrClickCounter(): void
 }
 
-const Main = observer<FC<IMainProps>>((props) => {
+const Main: FC<IMainProps> = observer((props) => {
     return (
-        <div>
-            <div style={{ marginTop: 10 }}>Install time: {props.installDate.toTimeString()}</div>
+        <div className='m-2'>
+            <div>Install time: {props.installDate.toTimeString()}</div>
             <div>Toggle BG Color</div>
-            <button onClick={props.onChangeBgColor}>toggle</button>
+            <Btn onClick={props.onChangeBgColor}>toggle</Btn>
             <div>Click counter: {props.clickCount}</div>
-            <button onClick={props.onIncrClickCounter}>increment</button>
+            <Btn onClick={props.onIncrClickCounter}>increment</Btn>
         </div>
     )
 })
+
+const Btn: FC<any> = (props) => {
+    return (
+        <button {...props} className='rounded-md py-1 px-2 focus:outline-none hover:bg-purple-600 active:bg-purple-800 bg-purple-400'></button>
+    )
+}

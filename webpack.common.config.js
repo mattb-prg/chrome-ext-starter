@@ -22,19 +22,20 @@ module.exports = {
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
             { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
             {
-                test: /module\.scss$/,
+                test: /\.css$/,
+                exclude: /node_modules/,
                 use: [
-                    'style-loader',
+                    {
+                        loader: 'style-loader',
+                    },
                     {
                         loader: 'css-loader',
-                        options: {
-                            importLoaders: 1,
-                            modules: true
-                        }
                     },
-                    'sass-loader'
+                    {
+                        loader: 'postcss-loader'
+                    }
                 ]
-            },
+            }
         ]
     },
 
@@ -44,7 +45,6 @@ module.exports = {
         }),
         new CopyWebpackPlugin([
             { from: 'src/ext/html', to: 'html' },
-            { from: 'src/ext/css', to: 'css' },
         ])
     ]
 };
